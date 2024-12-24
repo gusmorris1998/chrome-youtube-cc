@@ -19,24 +19,26 @@
     const newVideoLoaded = () => {
 
         // const captionsElement = document.querySelector(".captions-text");
-        const captionsElement = document.getElementsByClassName("captions-text");
-        const config = { attributes: true, childList: true, subtree: true };
+        const captionsElement = document.querySelector('.ytp-caption-window-container');
+        // const config = { attributes: true, childList: true, subtree: true };
 
-        const captionChange = (mutationList, observer) => {
-            for (const mutation of mutationList) {
-                if (mutation.type === "childList") {
-                    console.log("A child node has been added or removed.");
-                  } else if (mutation.type === "attributes") {
-                    console.log(`The ${mutation.attributeName} attribute was modified.`);
+        if (captionsElement) {
+            const observer = new MutationObserver((mutationList) => {
+                console.log("IM IN!!")
+                for (const mutation of mutationList) {
+                    console.log(mutation)
+                    if (mutation.type === 'childList') {
+                    }
                 }
-            }
-        };
+            });
 
-        // Create an observer instance linked to the callback function
-        const observer = new MutationObserver(captionChange);
+            observer.observe(captionsElement, {childList: true, subtree: true, characterData: true})
+            console.log(captionsElement)
 
-        // Start observing the target node for configured mutations
-        observer.observe(captionsElement, config);
+        } else {
+            console.error("Captions parent not found. Ensure captions are enabled!");
+        }
+
     };
 
 })();
