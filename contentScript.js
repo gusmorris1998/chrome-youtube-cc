@@ -1,8 +1,27 @@
 // An IIFE (Immediately Invoked Function Expression) is a JavaScript function that runs as soon as it is defined.
     // Basically the local scope of each tab, eliminating conflicts via global variables
 (() => {
+
+    const wordClick = () => {
+        console.log('Click!')
+    }
+
     const convertTextToClickable = (text) => {
-        console.log(text + 1);
+        const words = text.split(" ");
+        const fragment = document.createDocumentFragment();
+
+        words.forEach(word => {
+            const a = document.createElement('a');
+            a.textContent = word
+            a.addEventListener('click', wordClick)
+
+            fragment.appendChild(a);
+            // Creates a space at each word
+            fragment.appendChild(document.createTextNode(" "))
+            
+        });
+        
+        return fragment;
     };
 
     // Accessing the yt player and controls
@@ -31,12 +50,16 @@
                 const captionsText = document.querySelector('.captions-text');
                 const captionLines = captionsText.querySelectorAll('.caption-visual-line')
 
+                observer.disconnect()
                 for (let i = 0; i < captionLines.length; i++) {
 
-                    const captionLine = captionLines[i].querySelector('.ytp-caption-segment')
-                    observer.disconnect()
-                    console.log(captionLine.innerHTML)
-                    convertTextToClickable(captionLine.innerHTML)
+                    const captionLine = captionLines[i].querySelector('.ytp-caption-segment');
+                    // console.log(captionLine.innerHTML)
+
+                    // Clear innerHTML
+                    captionLine.innerHTML = '';
+
+                    captionLine.appendChild(convertTextToClickable(captionLine.textContent));
 
                 }
                 observer.observe(captionsElement, {childList: true, subtree: true, characterData: true})
