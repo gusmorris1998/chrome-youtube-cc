@@ -20,7 +20,7 @@
             fragment.appendChild(document.createTextNode(" "))
             
         });
-        
+
         return fragment;
     };
 
@@ -44,16 +44,22 @@
         const captionsElement = document.querySelector('.ytp-caption-window-container');
 
         if (captionsElement) {
+            var processing = false;
             const observer = new MutationObserver((mutationList) => {
                 console.log("IM IN!!")
+
+                if (processing) return;
                 
                 const captionsText = document.querySelector('.captions-text');
                 const captionLines = captionsText.querySelectorAll('.caption-visual-line')
-
-                observer.disconnect()
+                
+                // observer.disconnect()
                 for (let i = 0; i < captionLines.length; i++) {
 
                     const captionLine = captionLines[i].querySelector('.ytp-caption-segment');
+
+                    // Skip processing if the line is already clickable
+                    if (captionLine.querySelector('a')) continue;
                     // console.log(captionLine.innerHTML)
 
                     // Clear innerHTML
@@ -62,7 +68,9 @@
                     captionLine.appendChild(convertTextToClickable(captionLine.textContent));
 
                 }
-                observer.observe(captionsElement, {childList: true, subtree: true, characterData: true})
+
+                processing = false;
+                // observer.observe(captionsElement, {childList: true, subtree: true, characterData: true})
             });
 
             observer.observe(captionsElement, {childList: true, subtree: true, characterData: true})
