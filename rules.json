@@ -1,0 +1,16 @@
+[
+    {
+      "id": 1,
+      "priority": 1,
+      "action": {
+        "type": "redirect",
+        "redirect": {
+          "extensionPath": "/captions.js"
+        }
+      },
+      "condition": {
+        "urlFilter": "https://www.youtube.com/s/player/*/captions.js",
+        "resourceTypes": ["script"]
+      }
+    }
+  ]
